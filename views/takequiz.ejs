@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .quiz-box {
+            width: 500px;
+            border: 2px solid #c40094;
+            border-radius: 6px;
+            padding: 20px 30px;
+        }
+
+        .quiz-box h1 {
+            font-size: 32px;
+            text-align: center;
+            background: linear-gradient(45deg, transparent, #c40094, transparent);
+            border-radius: 6px;
+        }
+
+        .quiz-box .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #c40094;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header span {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .quiz-header .header-score {
+            background: #c40094;
+            border-radius: 3px;
+            padding: 7px;
+        }
+
+        .quiz-box .question-text {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .option-list .option {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 4px;
+            font-size: 17px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: .4s;
+        }
+
+        .option-list .correct {
+            background: #09001d;
+            color: #00a63d;
+            border-color: #00a63d;
+        }
+
+        .option-list .incorrect {
+            background: #09001d;
+            color: #a60045;
+            border-color: #a60045;
+        }
+
+        .option-list .disabled {
+            pointer-events: none;
+        }
+
+        .option-list .option:hover {
+            background: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+        }
+
+        .quiz-box .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 2px solid #c40094;
+            padding-top: 20px;
+            margin-top: 25px;
+        }
+
+        .quiz-footer span {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .quiz-footer .next-btn {
+            width: 100px;
+            height: 45px;
+            background: rgba(255, 255, 255, .1);
+            border: 2px solid rgba(255, 255, 255, .1);
+            outline: none;
+            border-radius: 6px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, .3);
+            font-weight: 600;
+            cursor: pointer;
+            pointer-events: none;
+            transition: .5s;
+        }
+
+        .quiz-footer .active {
+            pointer-events: auto;
+            background-color: #c40094;
+            border-color: #c40094;
+            color: #fff;
+        }
+
+        .quiz-footer .next-btn:hover {
+            background: #950170;
+            border-color: #950170;
+        }
+
+        .popup-info {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(.1);
+            background: #fff;
+            padding: 10px 25px;
+            border-radius: 6px;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.9s ease;
+        }
+
+        .popup-info.active {
+            background-color: #09001d;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .btn:hover {
+            cursor: pointer;
+            -webkit-box-reflect: below 1px linear-gradient(transparent, #0005);
+            box-shadow: 0 0 5px #03e9f4, 0 0 10px #03e9f4, 0 0 15px #03e9f4, 0 0 20px #03e9f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper quiz-section w-full h-screen text-white bg-slate-950 flex justify-center items-center">
+        <div class="quiz-box relative bg-transparent flex flex-col">
+            <h1 class="font-bold">Quiz Platform</h1>
+
+            <div class="quiz-header">
+                <span>Questions</span>
+                <span class="header-score">Score: 0 / 5</span>
+            </div>
+
+            <h2 class="question-text font-bold">What does HTML stand for?</h2>
+
+            <div class="option-list">
+                <!-- <div class="option">
+                    <span>A. hyper text transerf proto</span>
+                </div>
+
+                <div class="option">
+                    <span>B. hyper text transerf proto</span>
+                </div>
+
+                <div class="option">
+                    <span>C. hyper text transerf proto</span>
+                </div>
+
+                <div class="option">
+                    <span>D. hyper text transerf proto</span>
+                </div> -->
+            </div>
+
+            <div class="quiz-footer">
+                <span class="question-total">1 of 5 Questions</span>
+                <button id="nextBtn" class="next-btn">Next</button>
+            </div>
+
+            <div class="popup-info">
+                <a href="/result"><button class="w-42 h-20 btn bg-blue-500 text-xl rounded py-2 mt-3 px-5">View Result 🫣</button></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let questionCount = 0;
+        let questionNumb = 1;
+        let userScore = 0;
+        let questions = [];
+
+        async function getQuestion() {
+            const response = await fetch("http://localhost:3000/get-question");
+            const que = await response.json();
+            que.map((item, index) => {
+                const question = item.questionText;
+                let answer = "";
+                const options = item.options.map((optn) => {
+                    if (optn.isCorrect) {
+                        answer = optn.text;
+                    }
+                    return optn.text;
+                });
+                questions.push({
+                    numb: index,
+                    question,
+                    answer,
+                    options
+                });
+            });
+
+            let len = questions.length;
+            localStorage.setItem("len", len);
+
+            nextBtn.onclick = () => {
+                if (questionCount < questions.length - 1) {
+                    questionCount++;
+                    questionNumb++;
+                    showQuestions(questionCount);
+                    questionCounter(questionNumb);
+                    nextBtn.classList.remove('active');
+                    if (questionCount === questions.length - 1) {
+                        nextBtn.textContent = 'Submit';
+                    }
+                } else {
+                    popupInfo.classList.add('active');
+                }
+            };
+            showQuestions(0);
+            questionCounter(1);
+            headerScore(0);
+            // console.log(questions);
+        }
+
+        getQuestion();
+        localStorage.setItem("userScore", 0)
+        const nextBtn = document.querySelector(".next-btn");
+        const popupInfo = document.querySelector('.popup-info');
+        const optionList = document.querySelector(".option-list");
+
+        function optionSelected(answer) {
+            let userAnswer = answer.textContent;
+            let correctAnswer = questions[questionCount].answer;
+            let allOptions = optionList.children.length;
+
+            // console.log(userAnswer);
+            // console.log(correctAnswer);
+
+            if (userAnswer == correctAnswer) {
+                answer.classList.add('correct');
+                userScore += 1;
+                headerScore();
+            }
+            else {
+                answer.classList.add('incorrect');
+                for (let i = 0; i < allOptions; i++) {
+                    if (optionList.children[i].textContent == correctAnswer) {
+                        optionList.children[i].setAttribute('class', 'option correct');
+                    }
+                }
+            }
+            localStorage.setItem("userScore", userScore.toString());
+            for (let i = 0; i < allOptions; i++) {
+                optionList.children[i].classList.add("disabled");
+            }
+            nextBtn.classList.add("active");
+        }
+
+        userScore = parseInt(localStorage.getItem("userScore")) || 0;
+
+        function headerScore() {
+            const headerScoreText = document.querySelector(".header-score")
+            headerScoreText.textContent = `Score: ${userScore} / ${questions.length}`
+        }
+
+        function questionCounter(index) {
+            const questionTotal = document.querySelector(".question-total")
+            questionTotal.textContent = `${index} of ${questions.length} Questions`
+        }
+
+        function showQuestions(index) {
+            const questionText = document.querySelector(".question-text")
+            questionText.textContent = `${questions[index].numb+1}. ${questions[index].question}`
+
+            let optionTag = `<div class="option"><span>${questions[index].options[0]}</span></div>
+                            <div class="option"><span>${questions[index].options[1]}</span></div>
+                            <div class="option"><span>${questions[index].options[2]}</span></div>
+                            <div class="option"><span>${questions[index].options[3]}</span></div>`
+
+            optionList.innerHTML = optionTag
+
+            const option = document.querySelectorAll('.option')
+            for (let i = 0; i < option.length; i++) {
+                option[i].setAttribute('onclick', 'optionSelected(this)')
+            }
+        }
+    </script>
+</body>
+
+</html>

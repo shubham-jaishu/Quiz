@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Question</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <style>
+        * {
+            background-color: #1a202c;
+        }
+
+        .quiz-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a202c;
+        }
+
+        .quiz-box {
+            min-width: 500px;
+            min-height: 300px;
+            border: 2px solid #c40094;
+            border-radius: 6px;
+            padding: 20px 30px;
+            background-color: #1a202c;
+            /* Dark background */
+            color: white;
+        }
+
+        .quiz-box h1 {
+            font-size: 32px;
+            text-align: center;
+            background: linear-gradient(45deg, transparent, #c40094, transparent);
+            border-radius: 6px;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        #questionText {
+            font-size: 20px;
+            margin-bottom: 30px;
+            margin-top: 10px;
+            width: 400px;
+        }
+
+        .option {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            /* Align items vertically */
+        }
+
+        .opt {
+            width: 87px;
+        }
+
+        input[type="text"],
+        input[type="radio"] {
+            padding: 8px;
+            background-color: #2d3748;
+            /* Input background */
+            border: 1px solid #4a5568;
+            color: white;
+            border-radius: 4px;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="radio"]:focus {
+            outline: none;
+            border-color: #9f7aea;
+            /* Focus border color */
+        }
+
+        /* Style for labels associated with radio buttons */
+        label.radio-label {
+            margin-left: 1px;
+            /* Adjust as needed */
+            font-size: 16px;
+            /* Adjust font size */
+            color: white;
+            /* Text color */
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #9f7aea;
+            /* Button background color */
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-btn:hover {
+            background-color: #805ad5;
+            /* Button hover color */
+            box-shadow: 0 0 1px #805ad5, 0 0 5px #805ad5, 0 0 10px #805ad5;
+            /* Glowing effect */
+        }
+
+
+        .optText {
+            width: 320px;
+            margin-right: 50px;
+        }
+
+        #options-container {
+            margin-bottom: 30px;
+        }
+
+        /* Custom radio button styling */
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]+label::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #4a5568;
+            background-color: #2d3748;
+            border-radius: 4px;
+            /* Make it square */
+            margin-right: 10px;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        input[type="radio"]:checked+label::before {
+            background-color: #9f7aea;
+            /* Background color when selected */
+            content: "✔";
+            /* Tick mark */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Positioning the custom radio buttons correctly */
+        .option label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 flex justify-center items-center"> <!-- Dark background for the body -->
+    <div class="quiz-section h-screen flex justify-center items-center">
+        <div class="quiz-box">
+            <h1>Add a New Question</h1>
+            <form action="/add-question" method="POST">
+                <div class="mb-4">
+                    <label for="questionText" class="question-text">Question:</label>
+                    <input type="text" name="questionText" id="questionText" required class="block w-full">
+                </div>
+                <div id="options-container" class="option-list">
+                    <div class="option">
+                        <label for="option1" class="opt">Option 1:</label>
+                        <input type="text" name="options[0][text]" required class="block w-full optText">
+                        <input type="radio" name="isCorrect" value="0" id="option1" required>
+                        <label for="option1" class="radio-label"></label>
+                    </div>
+
+                    <div class="option">
+                        <label for="option2" class="opt">Option 2:</label>
+                        <input type="text" name="options[1][text]" required class="block w-full optText">
+                        <input type="radio" name="isCorrect" value="1" id="option2" required>
+                        <label for="option2" class="radio-label"></label>
+                    </div>
+
+                    <div class="option">
+                        <label for="option3" class="opt">Option 3:</label>
+                        <input type="text" name="options[2][text]" required class="block w-full optText">
+                        <input type="radio" name="isCorrect" value="2" id="option3" required>
+                        <label for="option3" class="radio-label"></label>
+                    </div>
+
+                    <div class="option">
+                        <label for="option4" class="opt">Option 4:</label>
+                        <input type="text" name="options[3][text]" required class="block w-full optText">
+                        <input type="radio" name="isCorrect" value="3" id="option4" required>
+                        <label for="option4" class="radio-label"></label>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <a href="/home"><button type="submit" class="start-btn">Add Question</button></a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+
+        .wrapper {
+            position: relative;
+            background: url(../images/blur_wall.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content {
+            backdrop-filter: blur(5px); /* Apply backdrop-filter for blurred background */
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for readability */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .content h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .form {
+            background-color: rgba(0, 0, 0, 0.8); /* Adjust transparency for form container */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .form input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            /* font-size: 20px; */
+            background: rgba(255, 255, 255, 0.8); /* Adjust transparency for input fields */
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .form input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .form input::placeholder {
+            color: rgba(16, 10, 10, 0.9); /* Adjust placeholder text color and transparency */
+        }
+
+        .form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form a {
+            color: #007bff;
+            text-decoration: none;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .form a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <h3>Create Account</h3>
+            <form class="form text-black" action="/register" method="post">
+                <input type="text" placeholder="Username" name="username" required>
+                <input type="text" placeholder="Name" name="name" required>
+                <input type="number" placeholder="Age" name="age" required>
+                <input type="email" placeholder="Email" name="email" required>
+                <input type="password" placeholder="Password" name="password" required>
+                <input type="submit" value="Create">
+                <a href="/login">Already have an account</a>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

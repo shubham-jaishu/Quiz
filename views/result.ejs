@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .result-box {
+            position: absolute;
+            width: 500px;
+            background: transparent;
+            border: 2px solid #c40094;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 6px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* opacity: 0;
+            pointer-events: none; */
+        }
+
+        .result-box h2 {
+            font-size: 52px;
+        }
+
+        .result-box .percentage-container {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0 40px;
+        }
+
+        .result-box .circular-progress {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            background: conic-gradient(#c40094 3.6deg, rgba(255, 255, 255, .1) 0deg);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-box .circular-progress::before {
+            content: '';
+            position: absolute;
+            width: 210px;
+            height: 210px;
+            background: #09001d;
+            border-radius: 50%;
+        }
+
+        .circular-progress .progress-value {
+            font-size: 45px;
+            position: relative;
+            font-weight: 600;
+        }
+
+        .percentage-container .score-text {
+            font-size: 26px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .result-box .buttons {
+            display: flex;
+        }
+
+        .buttons button {
+            width: 130px;
+            height: 47px;
+            background: #c40094;
+            border: 2px solid #c40094;
+            outline: none;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #fff;
+            font-weight: 600;
+            margin: 0 20px 20px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .buttons button:nth-child(1) {
+            background: #950170;
+            border-color: #950170;
+        }
+
+        .buttons button:nth-child(2) {
+            background: transparent;
+            color: #c40094;
+        }
+
+        .buttons button:nth-child(2):hover {
+            background: #c40094;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper w-full h-screen text-white bg-slate-950 flex justify-center items-center">
+        <div class="result-box">
+            <h2>Quiz Result!</h2>
+
+            <div class="percentage-container">
+                <div class="circular-progress">
+                    <span class="progress-value">0 %</span>
+                </div>
+
+                <span class="score-text">Your score 0 out of 5</span>
+            </div>
+
+            <div class="buttons">
+                <a href="/takequiz"><button class="tryAgain-btn">Try Again</button></a>
+                <a href="/home"><button class="goHome-btn">Go To Home</button></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function showResultBox() {
+            const scoreText = document.querySelector(".score-text");
+            let value = parseInt(localStorage.getItem("userScore"));
+            if (isNaN(value)) {
+                value = 0; // Initialize to 0 if userScore is not a number or not set
+                localStorage.setItem("userScore", value.toString()); // Store as string
+            }
+            // Convert to integer
+            const len = parseInt(localStorage.getItem("len")); // Convert to integer
+            const progressValue = document.querySelector(".progress-value");
+            const circularProgress = document.querySelector(".circular-progress");
+
+            let progressStartValue = -1;
+            let progressEndValue = (value / len) * 100;
+            let speed = 20;
+
+            let progress = setInterval(() => {
+                progressStartValue++;
+                progressValue.textContent = `${progressStartValue}%`;
+                circularProgress.style.background = `conic-gradient(#c40094 ${progressStartValue * 3.6}deg, rgba(255, 255, 255, .1) 0deg)`;
+
+                if (progressStartValue >= progressEndValue) {
+                    clearInterval(progress);
+                }
+            }, speed);
+
+            scoreText.textContent = `Your Score ${value} out of ${len}`;
+        }
+
+        showResultBox();
+
+    </script>
+</body>
+
+</html>
