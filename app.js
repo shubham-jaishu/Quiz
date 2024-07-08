@@ -63,7 +63,7 @@ app.post("/login", async (req, res) => {
         else {
             let token = jwt.sign({ email: email, userid: user.id }, "seckey")
             res.cookie("token", token)
-            localStorage.setItem("email", email)
+            // localStorage.setItem("email", email)
             res.status(200).redirect("/home")
         }
     })
@@ -170,10 +170,24 @@ app.post('/add-question', async (req, res) => {
       options: formattedOptions
     });
     console.log(formattedOptions);
-    let email = localStorage.getItem("email")
-    let user = await userModel.findOne({email})
+    // let email = localStorage.getItem("email")
     
+    // console.log(req.cookies);
+    const token = req.cookies.token;
+    let email;
+    if (token) {
+        try {
+            const decodedToken = jwt.verify(token, 'seckey');  // Replace 'your_secret_key' with your actual secret key
+            email = decodedToken.email;  // Assuming email is stored in the payload
+        } catch (err) {
+            return res.status(401).send('Invalid token');
+        }
+    } else {
+        return res.status(401).send('No token provided');
+    }
+    let user = await userModel.findOne({email})
     newQuestion.save()
+    //   .then(() => res.end())
       .then(() => res.render('home', {user}))
       .catch(err => res.status(500).send(err));
       
