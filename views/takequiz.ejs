@@ -201,7 +201,7 @@
         let questions = [];
 
         async function getQuestion() {
-            const response = await fetch("http://localhost:3000/get-question");
+            const response = await fetch("/get-question");
             const que = await response.json();
             que.map((item, index) => {
                 const question = item.questionText;
