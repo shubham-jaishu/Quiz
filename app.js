@@ -55,6 +55,7 @@ app.get("/login", (req, res) => {
 
 app.post("/login", async (req, res) => {
     let { email, password } = req.body
+    
     let user = await userModel.findOne({ email })
     if (!user) return res.status(500).send("Invalid Credentials")
     bcrypt.compare(password, user.password, (err, result) => {
@@ -62,6 +63,7 @@ app.post("/login", async (req, res) => {
         else {
             let token = jwt.sign({ email: email, userid: user.id }, "seckey")
             res.cookie("token", token)
+            localStorage.setItem("email", email)
             res.status(200).redirect("/home")
         }
     })
@@ -168,7 +170,9 @@ app.post('/add-question', async (req, res) => {
       options: formattedOptions
     });
     console.log(formattedOptions);
-    let user = await userModel.findOne({email: req.user.email})
+    let email = localStorage.getItem("email")
+    let user = await userModel.findOne({email})
+    
     newQuestion.save()
       .then(() => res.render('home', {user}))
       .catch(err => res.status(500).send(err));
