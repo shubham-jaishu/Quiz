@@ -187,11 +187,8 @@ app.post('/add-question', async (req, res) => {
     }
     let user = await userModel.findOne({email})
     newQuestion.save()
-    //   .then(() => res.end())
       .then(() => res.render('home', {user}))
       .catch(err => res.status(500).send(err));
-      
-    // res.end()
   });
   
 

@@ -64,8 +64,8 @@
             color: white;
             cursor: pointer;
             margin-top: 10px;
-            width: 100%;
-            height: 50px;
+            width: 145px;
+            height: 65px;
             border-radius: 8px;
             font-size: 1.2rem;
             font-weight: bold;
@@ -178,14 +178,29 @@
             background-color: rgba(0, 0, 0, 0.5);
             padding: 20px;
             border-radius: 10px;
-            width: 470px;
+            width: 540px;
             text-align: center;
-            min-height: 330px;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
         }
 
         .first-container {
             margin-bottom: 4rem;
             margin-top: 2.5rem;
+        }
+
+        .btns{
+            display: flex;
+            justify-content: center;
+        }
+
+        .prf{
+            transition: .5s ease;
+        }
+
+        .prf:hover{
+            transform: scale(1.5);
         }
     </style>
 </head>
@@ -196,29 +211,33 @@
             <a class="bg-red-500 rounded-md px-3 py-2 text-sm inline-block" href="/logout">Logout 💀</a>
         </div>
 
-        <div class="main-container">
-            <div class="flex gap-3">
-                <div class="w-12 h-12 rounded-md overflow-hidden mr-2">
+        <div class="main-container flex flex-col gap-20">
+            <div class="flex justify-center gap-3 pt-5">
+                <div class="w-12 h-12 rounded-md overflow-hidden mr-5 prf">
                     <a href="/profile/upload">
-                        <img 
-                            class="w-full h-full object-cover" 
-                            src="/images/uploads/<%= user.profilepic %>" 
-                            alt="Profile Picture" 
-                            onerror="this.onerror=null; this.src='../images/uploads/image_profile.png';"
-                        >
+                        <img class="w-full h-full object-cover" src="/images/uploads/<%= user.profilepic %>"
+                            alt="Profile Picture"
+                            onerror="this.onerror=null; this.src='../images/uploads/image_profile.png';">
                     </a>
                 </div>
-                
-                <h3 class="text-3xl mb-9"><span class="font-light">Hello</span>, <%= user.name %> 👋</h3>
+
+                <h3 class="text-3xl flex items-center"><span class="font-light">Hello</span>, <%= user.name %> 👋</h3>
             </div>
 
-            <div class="second_container flex ">
-                <div class=" mr-14 text-semibold font-semibold rounded-md">
-                    <a href="/create_quiz"><button class="w-40 h-20 btn text-xl rounded h-btn">Create Quiz</button></a>
+            <div class="second_container btns">
+                <div class="flex justify-around gap-9">
+                    <div class="w-1/3">
+                        <a href="/create_quiz"><button class="btn text-xl font-semibold rounded-md h-btn">Add Question</button></a>
+                    </div>
+                    <div class="w-1/3">
+                        <a href="/profile"><button class="btn text-xl font-semibold rounded-md h-btn">To Do</button></a>
+                    </div>
+                    <div class="w-1/3">
+                        <button class="btn text-xl font-semibold rounded-md start-btn h-btn">Take Quiz</button>
+                    </div>
                 </div>
-                <div class="w-40 h-20 ml-14 text-xl font-semibold rounded-md">
-                    <button class="w-40 h-20 btn text-xl rounded start-btn h-btn">Take Quiz</button>
-                </div>
+                
+
 
                 <div class="popup-info">
                     <h2>Quiz Guide</h2>
