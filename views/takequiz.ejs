@@ -291,7 +291,7 @@
 
         function showQuestions(index) {
             const questionText = document.querySelector(".question-text")
-            questionText.textContent = `${questions[index].numb+1}. ${questions[index].question}`
+            questionText.textContent = `${questions[index].question}`
 
             let optionTag = `<div class="option"><span>${questions[index].options[0]}</span></div>
                             <div class="option"><span>${questions[index].options[1]}</span></div>

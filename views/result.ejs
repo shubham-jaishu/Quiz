@@ -7,6 +7,18 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .wrapper {
+            position: relative;
+            background: url(../images/res.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .result-box {
             position: absolute;
             width: 500px;
@@ -20,6 +32,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.5);
             /* opacity: 0;
             pointer-events: none; */
         }
