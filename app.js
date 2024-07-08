@@ -153,7 +153,7 @@ app.get("/create_quiz", async (req, res) => {
     res.render("create_quiz")
 })
 
-app.post('/add-question', (req, res) => {
+app.post('/add-question', async (req, res) => {
     const { questionText, options, isCorrect } = req.body;
     // console.log(questionText);
     // console.log(options);
@@ -168,8 +168,9 @@ app.post('/add-question', (req, res) => {
       options: formattedOptions
     });
     console.log(formattedOptions);
+    let user = await userModel.findOne({email: req.user.email})
     newQuestion.save()
-      .then(() => res.render('home'))
+      .then(() => res.render('home', {user}))
       .catch(err => res.status(500).send(err));
       
     // res.end()
