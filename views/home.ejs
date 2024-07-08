@@ -199,8 +199,16 @@
         <div class="main-container">
             <div class="flex gap-3">
                 <div class="w-12 h-12 rounded-md overflow-hidden mr-2">
-                    <a href="/profile/upload"><img class="w-full h-full object-cover" src="/images/uploads/<%= user.profilepic %>" alt=""></a>
+                    <a href="/profile/upload">
+                        <img 
+                            class="w-full h-full object-cover" 
+                            src="/images/uploads/<%= user.profilepic %>" 
+                            alt="Profile Picture" 
+                            onerror="this.onerror=null; this.src='../images/uploads/image_profile.png';"
+                        >
+                    </a>
                 </div>
+                
                 <h3 class="text-3xl mb-9"><span class="font-light">Hello</span>, <%= user.name %> 👋</h3>
             </div>
 
