@@ -87,12 +87,12 @@ This project is a multi-functional Quiz Application that offers:
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/quiz-app.git
+   git clone https://github.com/shubham-jaishu/Quiz.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd quiz-app
+   cd Quiz
    ```
 
 3. Install dependencies:
